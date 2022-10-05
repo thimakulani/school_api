@@ -84,7 +84,7 @@ namespace school_api.Controllers
                 school.Icon = file_path;
                 _context.Update(school);
                 _context.SaveChanges();
-                return Ok();
+                return Ok("Image has been successfully uploaded");
             }
             return BadRequest("Please update the school information first, before uploading the image");
             
