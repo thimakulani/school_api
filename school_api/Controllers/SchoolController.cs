@@ -66,7 +66,7 @@ namespace school_api.Controllers
             return CreatedAtAction("GetSchool", new { id = school.Id }, school);
         }
         [HttpPost("Uploads")]
-        public ActionResult UploadFile(IFormFile file)
+        public async Task<ActionResult> UploadFile(IFormFile file)
         {
             string path = "Uploads";
             if (!Directory.Exists(path))
@@ -77,7 +77,17 @@ namespace school_api.Controllers
             string unique_name = Guid.NewGuid().ToString() + "_" + file.FileName;
             string file_path = Path.Combine(upload_folder, unique_name);
             file.CopyTo(new FileStream(file_path, FileMode.Create));
-            return Ok();
+
+            var school = await _context.School.FindAsync(1);
+            if(SchoolExists(1))
+            {
+                school.Icon = file_path;
+                _context.Update(school);
+                _context.SaveChanges();
+                return Ok();
+            }
+            return BadRequest("Please update the school information first, before uploading the image");
+            
         }
         private bool SchoolExists(int id)
         {
