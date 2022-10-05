@@ -15,10 +15,11 @@ namespace school_api.Controllers
     public class SchoolController : ControllerBase
     {
         private readonly AppDbContext _context;
-
-        public SchoolController(AppDbContext context)
+        private readonly IWebHostEnvironment _web_hosting;
+        public SchoolController(AppDbContext context, IWebHostEnvironment web_hosting)
         {
             _context = context;
+            _web_hosting = web_hosting;
         }
 
         // GET: api/School
@@ -64,7 +65,20 @@ namespace school_api.Controllers
 
             return CreatedAtAction("GetSchool", new { id = school.Id }, school);
         }
-
+        [HttpPost("Uploads")]
+        public ActionResult UploadFile(IFormFile file)
+        {
+            string path = "Uploads";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string upload_folder = Path.Combine(_web_hosting.ContentRootPath, path);
+            string unique_name = Guid.NewGuid().ToString() + "_" + file.FileName;
+            string file_path = Path.Combine(upload_folder, unique_name);
+            file.CopyTo(new FileStream(file_path, FileMode.Create));
+            return Ok();
+        }
         private bool SchoolExists(int id)
         {
             return _context.School.Any(e => e.Id == id);
