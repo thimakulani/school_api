@@ -48,8 +48,9 @@ namespace school_api.Controllers
         [HttpPost]
         public async Task<ActionResult<School>> PostSchool(School school)
         {
-            school.Id = 1;
-            if (_context.School.ToList().Count() > 0)
+            //var s = await _context.School.FindAsync(1);
+            //school.Id = 1;
+            if (SchoolExists(1))
             {
                 _context.School.Update(school);
                 await _context.SaveChangesAsync();
