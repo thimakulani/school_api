@@ -4,7 +4,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:38587",
+      "applicationUrl": "https://schoolms-api.herokuapp.com/",
       "sslPort": 44357
     }
   },
@@ -14,7 +14,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://schoolms-api.herokuapp.com/;http://localhost:5174",
+      "applicationUrl": "https://localhost:7174;http://localhost:5174",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
