@@ -14,7 +14,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://schoolms-api.herokuapp.com/https://schoolms-api.herokuapp.com/;http://localhost:5174",
+      "applicationUrl": "https://schoolms-api.herokuapp.com/;http://localhost:5174",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
