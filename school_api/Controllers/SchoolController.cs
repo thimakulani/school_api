@@ -68,6 +68,7 @@ namespace school_api.Controllers
         [HttpPost("Uploads")]
         public async Task<ActionResult> UploadFile(IFormFile file)
         {
+            
             string path = "Uploads";
             if (!Directory.Exists(path))
             {
@@ -84,7 +85,7 @@ namespace school_api.Controllers
                 school.Icon = file_path;
                 _context.Update(school);
                 _context.SaveChanges();
-                return Ok("Image has been successfully uploaded");
+                return Ok($"Image has been successfully uploaded {AppDomain.CurrentDomain.BaseDirectory}");
             }
             return BadRequest("Please update the school information first, before uploading the image");
             
