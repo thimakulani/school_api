@@ -8,7 +8,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using school_api.Data;
 using school_api.Model;
-
+using AspNetCoreCompatibility;
 
 var builder = WebApplication.CreateBuilder(args);
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 27));
@@ -74,6 +74,8 @@ builder.Services.AddAuthentication((cfg =>
 
     };
 });
+builder.Services.AddSingleton(new CompatibilityHttpContextAccessor());
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Events.OnRedirectToLogin = context =>
@@ -90,7 +92,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseAspNetCompatibility();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

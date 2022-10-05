@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreCompatibility;
 using Firebase.Storage;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using school_api.Data;
+using System.Web;
 using school_api.Model;
+using static System.Net.WebRequestMethods;
 
 namespace school_api.Controllers
 {
@@ -84,23 +88,15 @@ namespace school_api.Controllers
             var school = await _context.School.FindAsync(1);
             if(SchoolExists(1))
             {
+               
 
-                Storage storage = new Storage();
-
-                //var file_stream = file.
-                using (var stream = file.OpenReadStream()){
-                
-                    var buffer = new byte[4096];
-                    stream.Read(buffer, 0, buffer.Length);
-                    await storage.getStorage().Child("uploads").PutAsync(stream);
-                }
-
-
-                
                 school.Icon = file_path;
                 _context.Update(school);
                 _context.SaveChanges();
-                return Ok($"Image has been successfully uploaded {AppDomain.CurrentDomain.BaseDirectory}");
+
+
+                var context = CompatibilityHttpContextAccessor.Current;
+                return Ok($"Image has been successfully uploaded {context.Request.Host}");
             }
             return BadRequest("Please update the school information first, before uploading the image");
             
@@ -113,9 +109,13 @@ namespace school_api.Controllers
 
     public class Storage
     {
-        public Firebase.Storage.FirebaseStorage getStorage()
+        public static FirebaseStorage GetStorage()
         {
-            Firebase.Storage.FirebaseStorage storage = new Firebase.Storage.FirebaseStorage("gs://school-transport-fc879.appspot.com");
+            var fo = new FirebaseStorageOptions()
+            {
+                ThrowOnCancel = true,
+            };
+            FirebaseStorage storage = new("gs://school-transport-fc879.appspot.com", fo);
 
             return storage;
         }
