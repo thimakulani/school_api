@@ -4,7 +4,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "https://schoolms-api.herokuapp.com/",
+      "applicationUrl": "http://localhost:38587",
       "sslPort": 44357
     }
   },

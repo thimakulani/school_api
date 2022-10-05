@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Firebase.Storage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -82,6 +84,19 @@ namespace school_api.Controllers
             var school = await _context.School.FindAsync(1);
             if(SchoolExists(1))
             {
+
+                Storage storage = new Storage();
+
+                //var file_stream = file.
+                using (var stream = file.OpenReadStream()){
+                
+                    var buffer = new byte[4096];
+                    stream.Read(buffer, 0, buffer.Length);
+                    await storage.getStorage().Child("uploads").PutAsync(stream);
+                }
+
+
+                
                 school.Icon = file_path;
                 _context.Update(school);
                 _context.SaveChanges();
@@ -95,4 +110,15 @@ namespace school_api.Controllers
             return _context.School.Any(e => e.Id == id);
         }
     }
+
+    public class Storage
+    {
+        public Firebase.Storage.FirebaseStorage getStorage()
+        {
+            Firebase.Storage.FirebaseStorage storage = new Firebase.Storage.FirebaseStorage("gs://school-transport-fc879.appspot.com");
+
+            return storage;
+        }
+    }
+    
 }
