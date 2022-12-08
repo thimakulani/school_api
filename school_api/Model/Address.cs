@@ -7,7 +7,7 @@ namespace school_api.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string StreetName { get; set; }
-        public string Saburb { get; set; }
+        public string Suburb { get; set; }
         public string City { get; set; }
         public int Code { get; set; }
     }
